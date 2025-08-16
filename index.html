@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phiếu Đề Nghị Yêu Cầu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', serif;
+            line-height: 1.4;
+            color: #000;
+            background: #f5f5f5;
+            padding: 20px;
+            font-size: 12px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border: 1px solid #000;
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 8px;
+            background: #e6f3ff;
+            border: 1px solid #333;
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            min-width: 80px;
+        }
+
+        .info-value {
+            padding: 2px 8px;
+            background: white;
+            border: 1px solid #ccc;
+            min-width: 150px;
+            min-height: 20px;
+        }
+
+        .content-section {
+            margin-bottom: 15px;
+            padding: 8px;
+            background: #e6f3ff;
+            border: 1px solid #333;
+        }
+
+        .content-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 8px;
+        }
+
+        .content-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .content-label {
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .content-value {
+            padding: 4px 8px;
+            background: white;
+            border: 1px solid #ccc;
+            min-height: 25px;
+            flex: 1;
+        }
+
+        .content-value.large {
+            min-height: 60px;
+            align-items: flex-start;
+            padding-top: 8px;
+        }
+
+        .table-container {
+            margin-bottom: 20px;
+            border: 2px solid #000;
+        }
+
+        .main-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+
+        .main-table th, .main-table td {
+            border: 1px solid #000;
+            padding: 4px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .main-table th {
+            background: #d0e4f7;
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+        .main-table .stt-col { width: 30px; }
+        .main-table .mavat-col { width: 60px; }
+        .main-table .ten-col { width: 120px; }
+        .main-table .dvt-col { width: 40px; }
+        .main-table .quy-cach-col { width: 80px; }
+        .main-table .hang-col { width: 60px; }
+        .main-table .thongso-col { width: 80px; }
+        .main-table .khoiluong-col { width: 70px; }
+        .main-table .tongkhoi-col { width: 70px; }
+        .main-table .soluong-col { width: 60px; }
+        .main-table .denhoi-col { width: 70px; }
+        .main-table .conlai-col { width: 70px; }
+        .main-table .ngaycau-col { width: 80px; }
+        .main-table .nhacung-col { width: 100px; }
+        .main-table .ghichu-col { width: 100px; }
+
+        .table-row {
+            height: 35px;
+        }
+
+        .editable {
+            background: white;
+            min-height: 25px;
+            padding: 2px;
+            border: none;
+            width: 100%;
+            text-align: center;
+        }
+
+        .buttons {
+            margin-top: 30px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        }
+
+        .signature-section {
+            margin-top: 30px;
+            text-align: right;
+            font-style: italic;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                font-size: 11px;
+            }
+            
+            .container {
+                padding: 10px;
+                border: none;
+            }
+            
+            .buttons {
+                display: none;
+            }
+        }
+
+        .no-data {
+            color: #999;
+            font-style: italic;
+        }
+
+        .row-controls {
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .add-row-btn, .remove-row-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 10px;
+            margin: 0 2px;
+        }
+
+        .remove-row-btn {
+            background: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Information -->
+        <div class="header-info">
+            <div class="header-left">
+                <div class="info-row">
+                    <span class="info-label">Mã dự án:</span>
+                    <div class="info-value" id="duAn">Dự án</div>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Hệ thống:</span>
+                    <div class="info-value" id="heThong">Hệ thống</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="info-row">
+                    <span class="info-label">Số YCVT:</span>
+                    <div class="info-value" id="soPhieu">Số phiếu</div>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Người đề nghị:</span>
+                    <div class="info-value" id="nguoiDeXuat">Người đề xuất</div>
+                    <span style="margin-left: 20px;"><strong>Chức vụ:</strong> Chỉ huy trưởng</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <div class="content-section">
+            <div class="content-row">
+                <div class="content-item" style="flex: 2;">
+                    <span class="content-label">Nội dung đề xuất:</span>
+                    <div class="content-value large" id="noiDungDeXuat">Nội dung đề xuất</div>
+                </div>
+                <div class="content-item" style="flex: 1;">
+                    <span class="content-label">Ngày đề xuất:</span>
+                    <div class="content-value" id="ngayDeXuat">Ngày đề xuất</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Table -->
+        <div class="table-container">
+            <table class="main-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="stt-col">STT</th>
+                        <th rowspan="2" class="mavat-col">Mã vật tư</th>
+                        <th rowspan="2" class="ten-col">Tên vật tư, thiết bị</th>
+                        <th rowspan="2" class="dvt-col">ĐVT</th>
+                        <th rowspan="2" class="quy-cach-col">Quy cách, Mã hiệu</th>
+                        <th rowspan="2" class="hang-col">Hãng/ xuất xứ</th>
+                        <th rowspan="2" class="thongso-col">Thông số kỹ thuật</th>
+                        <th rowspan="2" class="khoiluong-col">Khối lượng hợp đồng</th>
+                        <th rowspan="2" class="tongkhoi-col">Tổng khối lượng dự kiến</th>
+                        <th rowspan="2" class="soluong-col">Số lượng lũy kế đã cấp</th>
+                        <th rowspan="2" class="denhoi-col">SL đề nghị đợt này</th>
+                        <th rowspan="2" class="conlai-col">Số lượng còn lại</th>
+                        <th rowspan="2" class="ngaycau-col">Ngày yêu cầu cấp</th>
+                        <th rowspan="2" class="nhacung-col">Nhà cung cấp</th>
+                        <th rowspan="2" class="ghichu-col">Ghi chú</th>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 9px; font-style: italic;">&lt;&lt;Start Select (CT_YCVT [ID], [Số phiếu])&gt;&gt; &lt;&lt;[Thiết kết]&gt;&gt; &lt;&lt;[Số phiếu])&gt;&gt;</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Rows sẽ được generate bởi JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Buttons -->
+        <div class="buttons">
+            <button class="btn" onclick="printForm()">🖨️ In phiếu</button>
+            <button class="btn secondary" onclick="exportToPDF()">📄 Xuất PDF</button>
+            <button class="btn secondary" onclick="fillSampleData()">📝 Dữ liệu mẫu</button>
+            <button class="btn secondary" onclick="addTableRow()">➕ Thêm dòng</button>
+            <button class="btn secondary" onclick="clearAllData()">🗑️ Xóa dữ liệu</button>
+        </div>
+
+        <!-- Signature -->
+        <div class="signature-section">
+            <p>Ngày ... tháng ... năm 2024</p>
+            <p><strong>Người lập phiếu</strong></p>
+            <br><br>
+            <p>(Ký tên và ghi rõ họ tên)</p>
+        </div>
+    </div>
+
+    <script>
+        let tableData = [];
+
+        // Hàm lấy parameters từ URL
+        function getURLParameters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const params = {};
+            
+            const paramNames = [
+                'soPhieu', 'duAn', 'heThong', 'noiDungDeXuat', 
+                'nguoiDeXuat', 'ngayDeXuat', 'ghiChu', 'tableData'
+            ];
+            
+            paramNames.forEach(param => {
+                const value = urlParams.get(param);
+                params[param] = value ? decodeURIComponent(value) : null;
+            });
+            
+            // Lấy dữ liệu bảng theo format item1_, item2_, ... từ AppSheet
+            const tableItems = [];
+            let itemIndex = 1;
+            
+            while (urlParams.has(`item${itemIndex}_maVatTu`) || urlParams.has(`item${itemIndex}_tenVatTu`)) {
+                const item = {
+                    stt: itemIndex,
+                    maVatTu: decodeURIComponent(urlParams.get(`item${itemIndex}_maVatTu`) || ''),
+                    tenVatTu: decodeURIComponent(urlParams.get(`item${itemIndex}_tenVatTu`) || ''),
+                    dvt: decodeURIComponent(urlParams.get(`item${itemIndex}_dvt`) || ''),
+                    quyCach: decodeURIComponent(urlParams.get(`item${itemIndex}_quyCach`) || ''),
+                    hangXuatXu: decodeURIComponent(urlParams.get(`item${itemIndex}_hangXuatXu`) || ''),
+                    thongSoKyThuat: decodeURIComponent(urlParams.get(`item${itemIndex}_thongSoKyThuat`) || ''),
+                    khoiLuongHopDong: urlParams.get(`item${itemIndex}_khoiLuongHopDong`) || '',
+                    tongKhoiLuong: urlParams.get(`item${itemIndex}_tongKhoiLuong`) || '',
+                    soLuongLuyKe: urlParams.get(`item${itemIndex}_soLuongLuyKe`) || '',
+                    slDeNghi: urlParams.get(`item${itemIndex}_slDeNghi`) || '',
+                    soLuongConLai: urlParams.get(`item${itemIndex}_soLuongConLai`) || '',
+                    ngayYeuCau: urlParams.get(`item${itemIndex}_ngayYeuCau`) || '',
+                    nhaCungCap: decodeURIComponent(urlParams.get(`item${itemIndex}_nhaCungCap`) || ''),
+                    ghiChu: decodeURIComponent(urlParams.get(`item${itemIndex}_ghiChu`) || '')
+                };
+                
+                // Chỉ thêm item nếu có ít nhất mã vật tư hoặc tên vật tư
+                if (item.maVatTu || item.tenVatTu) {
+                    tableItems.push(item);
+                }
+                itemIndex++;
+                
+                // Giới hạn tối đa 20 items để tránh vòng lặp vô hạn
+                if (itemIndex > 20) break;
+            }
+            
+            if (tableItems.length > 0) {
+                params.tableItems = tableItems;
+            }
+            
+            return params;
+        }
+
+        // Hàm điền dữ liệu cơ bản vào form
+        function populateForm(data) {
+            const basicFields = ['soPhieu', 'duAn', 'heThong', 'noiDungDeXuat', 'nguoiDeXuat', 'ngayDeXuat'];
+            
+            basicFields.forEach(field => {
+                const element = document.getElementById(field);
+                if (element && data[field]) {
+                    element.textContent = data[field];
+                }
+            });
+
+            // Format ngày đề xuất
+            if (data.ngayDeXuat) {
+                const ngayElement = document.getElementById('ngayDeXuat');
+                try {
+                    const date = new Date(data.ngayDeXuat);
+                    if (!isNaN(date.getTime())) {
+                        ngayElement.textContent = date.toLocaleDateString('vi-VN', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                        });
+                    } else {
+                        ngayElement.textContent = data.ngayDeXuat;
+                    }
+                } catch (e) {
+                    ngayElement.textContent = data.ngayDeXuat;
+                }
+            }
+
+            // Xử lý dữ liệu bảng từ JSON
+            if (data.tableData) {
+                try {
+                    tableData = JSON.parse(data.tableData);
+                    // Đảm bảo có STT
+                    tableData.forEach((item, index) => {
+                        item.stt = index + 1;
+                    });
+                    renderTable();
+                } catch (e) {
+                    console.error('Lỗi parse dữ liệu bảng JSON:', e);
+                }
+            }
+            
+            // Xử lý dữ liệu bảng từ parameters riêng lẻ (từ AppSheet)
+            if (data.tableItems && data.tableItems.length > 0) {
+                tableData = data.tableItems;
+                renderTable();
+                console.log('Đã load dữ liệu từ AppSheet:', data.tableItems.length + ' items');
+            }
+        }
+
+        // Hàm tạo dòng trống cho bảng
+        function createEmptyRow(index) {
+            return {
+                stt: index + 1,
+                maVatTu: '',
+                tenVatTu: '',
+                dvt: '',
+                quyCach: '',
+                hangXuatXu: '',
+                thongSoKyThuat: '',
+                khoiLuongHopDong: '',
+                tongKhoiLuong: '',
+                soLuongLuyKe: '',
+                slDeNghi: '',
+                soLuongConLai: '',
+                ngayYeuCau: '',
+                nhaCungCap: '',
+                ghiChu: ''
+            };
+        }
+
+        // Hàm render bảng
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            if (tableData.length === 0) {
+                // Tạo 10 dòng trống mặc định
+                for (let i = 0; i < 10; i++) {
+                    tableData.push(createEmptyRow(i));
+                }
+            }
+
+            tableData.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row';
+                tr.innerHTML = `
+                    <td>${row.stt}</td>
+                    <td><input type="text" class="editable" value="${row.maVatTu}" onchange="updateTableData(${index}, 'maVatTu', this.value)"></td>
+                    <td><input type="text" class="editable" value="${row.tenVatTu}" onchange="updateTableData(${index}, 'tenVatTu', this.value)"></td>
+                    <td><input type="text" class="editable" value="${row.dvt}" onchange="updateTableData(${index}, 'dvt', this.value)"></td>
+                    <td><input type="text" class="editable" value="${row.quyCach}" onchange="updateTableData(${index}, 'quyCach', this.value)"></td>
+                    <td><input type="text" class="editable" value="${row.hangXuatXu}" onchange="updateTableData(${index}, 'hangXuatXu', this.value)"></td>
+                    <td><input type="text" class="editable" value="${row.thongSoKyThuat}" onchange="updateTableData(${index}, 'thongSoKyThuat', this.value)"></td>
+                    <td><input type="text" class="editable" value="${row.khoiLuongHopDong}" onchange="updateTableData(${index}, 'khoiLuongHopDong', this.value)"></td>
+                    <td><input type="text" class="editable" value="${row.tongKhoiLuong}" onchange="updateTableData(${index}, 'tongKhoiLuong', this.value)"></td>
+                    <td><input type="text" class="editable" value="${row.soLuongLuyKe}" onchange="updateTableData(${index}, 'soLuongLuyKe', this.value)"></td>
+                    <td><input type="text" class="editable" value="${row.slDeNghi}" onchange="updateTableData(${index}, 'slDeNghi', this.value)"></td>
+                    <td><input type="text" class="editable" value="${row.soLuongConLai}" onchange="updateTableData(${index}, 'soLuongConLai', this.value)"></td>
+                    <td><input type="date" class="editable" value="${row.ngayYeuCau}" onchange="updateTableData(${index}, 'ngayYeuCau', this.value)"></td>
+                    <td><input type="text" class="editable" value="${row.nhaCungCap}" onchange="updateTableData(${index}, 'nhaCungCap', this.value)"></td>
+                    <td><input type="text" class="editable" value="${row.ghiChu}" onchange="updateTableData(${index}, 'ghiChu', this.value)"></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Hàm cập nhật dữ liệu bảng
+        function updateTableData(index, field, value) {
+            if (tableData[index]) {
+                tableData[index][field] = value;
+            }
+        }
+
+        // Hàm thêm dòng mới
+        function addTableRow() {
+            const newIndex = tableData.length;
+            tableData.push(createEmptyRow(newIndex));
+            renderTable();
+        }
+
+        // Hàm xóa tất cả dữ liệu
+        function clearAllData() {
+            if (confirm('Bạn có chắc muốn xóa tất cả dữ liệu?')) {
+                tableData = [];
+                renderTable();
+                
+                // Clear basic fields
+                ['soPhieu', 'duAn', 'heThong', 'noiDungDeXuat', 'nguoiDeXuat', 'ngayDeXuat'].forEach(field => {
+                    const element = document.getElementById(field);
+                    if (element) {
+                        element.textContent = field.charAt(0).toUpperCase() + field.slice(1);
+                    }
+                });
+            }
+        }
+
+        // Hàm điền dữ liệu mẫu
+        function fillSampleData() {
+            const sampleBasicData = {
+                soPhieu: 'YCVT-2024-001',
+                duAn: 'Dự án ERP System',
+                heThong: 'Hệ thống quản lý',
+                noiDungDeXuat: 'Đề xuất mua sắm thiết bị và phần mềm cho hệ thống quản lý kho',
+                nguoiDeXuat: 'Nguyễn Văn A',
+                ngayDeXuat: '15/08/2024'
+            };
+
+            populateForm(sampleBasicData);
+
+            // Sample table data theo format AppSheet
+            tableData = [
+                {
+                    stt: 1,
+                    maVatTu: 'MT001',
+                    tenVatTu: 'Máy tính Dell OptiPlex 7090',
+                    dvt: 'Bộ',
+                    quyCach: '7090 MT, i5-10500',
+                    hangXuatXu: 'Dell/USA',
+                    thongSoKyThuat: 'i5-10500, 8GB RAM, 256GB SSD',
+                    khoiLuongHopDong: '10',
+                    tongKhoiLuong: '10',
+                    soLuongLuyKe: '5',
+                    slDeNghi: '3',
+                    soLuongConLai: '2',
+                    ngayYeuCau: '2024-09-01',
+                    nhaCungCap: 'Công ty ABC',
+                    ghiChu: 'Cấp gấp'
+                },
+                {
+                    stt: 2,
+                    maVatTu: 'MT002',
+                    tenVatTu: 'License Windows 11 Pro',
+                    dvt: 'License',
+                    quyCach: 'FQC-10528',
+                    hangXuatXu: 'Microsoft/USA',
+                    thongSoKyThuat: 'Windows 11 Professional 64-bit',
+                    khoiLuongHopDong: '10',
+                    tongKhoiLuong: '10',
+                    soLuongLuyKe: '5',
+                    slDeNghi: '3',
+                    soLuongConLai: '2',
+                    ngayYeuCau: '2024-09-01',
+                    nhaCungCap: 'Công ty XYZ',
+                    ghiChu: 'Bản quyền chính hãng'
+                }
+            ];
+
+            // Thêm 8 dòng trống nữa
+            for (let i = 2; i < 10; i++) {
+                tableData.push(createEmptyRow(i));
+            }
+
+            renderTable();
+        }
+
+        // Hàm in form
+        function printForm() {
+            window.print();
+        }
+
+        // Hàm xuất PDF
+        function exportToPDF() {
+            const printWindow = window.open('', '_blank');
+            const content = document.documentElement.outerHTML;
+            
+            printWindow.document.write(content);
+            printWindow.document.close();
+            
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
+        }
+
+        // Khởi tạo khi trang được load
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlData = getURLParameters();
+            populateForm(urlData);
+            
+            if (tableData.length === 0) {
+                renderTable(); // Tạo bảng trống mặc định
+            }
+        });
+
+        // Export function để tạo URL với dữ liệu
+        function createFormURL(baseURL, basicData, tableData) {
+            const url = new URL(baseURL);
+            
+            // Thêm dữ liệu cơ bản
+            Object.keys(basicData).forEach(key => {
+                if (basicData[key]) {
+                    url.searchParams.set(key, encodeURIComponent(basicData[key]));
+                }
+            });
+            
+            // Thêm dữ liệu bảng
+            if (tableData && tableData.length > 0) {
+                url.searchParams.set('tableData', encodeURIComponent(JSON.stringify(tableData)));
+            }
+            
+            return url.toString();
+        }
+
+        window.createFormURL = createFormURL;
+    </script>
+</body>
+</html>
